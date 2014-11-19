@@ -1,0 +1,19 @@
+<?php
+$nav = '<li><a href="' . $this->url(array('action' => 'dashboard', 'controller' => 'index', 'module' => 'default'), null, true, true) . '"><i class="fa fa-home"></i> &nbsp; Dashboard</a></li>'."\n";
+foreach ($this->navigation as $rName => $resources) {
+    $prv = '';
+    foreach ($resources as $resource) {
+        foreach ($resource as $pName => $privilege) {
+            $prv .= '<li><a href="' . $this->url(array('action' => $privilege['action'], 'controller' => $privilege['controller'], 'module' => $privilege['module']), null, true, true) . '">' . $this->escape($pName) . '</a></li>'."\n";
+        }
+    }
+    $nav .= '<li>
+                <span> ' . $this->escape($rName) . '</span>
+                    <div>
+                        <ul>
+                            ' . $prv . '
+                        </ul>
+                    </div>
+            </li>'."\n";
+}
+echo '<nav id="menu"><ul>' . $nav . '</ul></nav>';
