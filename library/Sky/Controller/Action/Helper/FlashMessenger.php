@@ -9,9 +9,8 @@
  * @subpackage PYC_Constellation_Controller_Action_Helper
  * @version    $Id: FlashMessenger.php 23775 2011-03-01 17:25:24Z ralph $
  */
-class Sky_Controller_Action_Helper_FlashMessenger
-      extends Zend_Controller_Action_Helper_FlashMessenger
-{
+class Sky_Controller_Action_Helper_FlashMessenger extends Zend_Controller_Action_Helper_FlashMessenger {
+
     /**
      * $_namespace - Instance namespace, default is 'default'
      *
@@ -19,10 +18,11 @@ class Sky_Controller_Action_Helper_FlashMessenger
      */
     protected $_namespace = 'SKY_MENSSAGE';
 
-    const SKY_MESSAGE_TYPE_SUCESS = 'alert-success';
-    const SKY_MESSAGE_TYPE_INFO = 'alert-info';
-    const SKY_MESSAGE_TYPE_WARNING = 'alert-warning';
-    const SKY_MESSAGE_TYPE_DANGER = 'alert-danger';
+    const SKY_MESSAGE_TYPE_SUCESS = 'success';
+    const SKY_MESSAGE_TYPE_INFO = 'info';
+    const SKY_MESSAGE_TYPE_WARNING = 'warning';
+    const SKY_MESSAGE_TYPE_ALERT = 'alert';
+    const SKY_MESSAGE_TYPE_SECUNDARY = 'secondary';
 
     /**
      * __construct() - Instance constructor, needed to get iterators, etc
@@ -30,8 +30,7 @@ class Sky_Controller_Action_Helper_FlashMessenger
      * @param  string $namespace
      * @return void
      */
-    public function __construct()
-    {
+    public function __construct() {
         parent::__construct();
     }
 
@@ -42,8 +41,7 @@ class Sky_Controller_Action_Helper_FlashMessenger
      * @param  string $namespace
      * @return Zend_Controller_Action_Helper_FlashMessenger Provides a fluent interface
      */
-    public function setNamespace($namespace = 'SKY_MENSSAGE')
-    {
+    public function setNamespace($namespace = 'SKY_MENSSAGE') {
         $this->_namespace = $namespace;
         return $this;
     }
@@ -54,8 +52,7 @@ class Sky_Controller_Action_Helper_FlashMessenger
      * @param  string $message
      * @return Zend_Controller_Action_Helper_FlashMessenger Provides a fluent interface
      */
-    public function addMessage($message,$type)
-    {
+    public function addMessage($message, $type) {
         if (self::$_messageAdded === false) {
             self::$_session->setExpirationHops(1, null, true);
         }
@@ -74,40 +71,41 @@ class Sky_Controller_Action_Helper_FlashMessenger
      *
      * @return array
      */
-    public function getMessages()
-    {
+    public function getMessages() {
         if ($this->hasMessages()) {
             return self::$_messages[$this->_namespace];
         }
 
         return array();
     }
-    
+
     /**
      * getMessages() - Get messages from a specific namespace
      * in format html
      *
      * @return array
      */
-    public function getHtmlMessages()
-    {
+    public function getHtmlMessages() {
         if ($this->hasMessages()) {
-            $html = '';
-            foreach (parent::getMessages() as $type=>$message){
-                $html .= '<div class="alert '.$type.' fade in" role="alert">'
-                        . '<button data-dismiss="alert" class="close" type="button">'
-                        . '<span aria-hidden="true">×</span>'
-                        . '<span class="sr-only">Close</span>'
-                        . '</button>';
-                
-                foreach ($message as $msg){
-                    $html .= '<p>'.$msg.'</p>';
-                }
-                $html .= '</div>';
+            $html = array();
+            foreach (parent::getMessages() as $type => $message) {
+                $html[] = '<div data-alert class="alert-box ' . $type . ' radius">
+                            ' . self::_formatAlerts($message) . '
+                            <a href="#" class="close">&times;</a>
+                          </div>';
             };
         }
 
-        return $html;
+        return implode("\n\r", $html);
+    }
+
+    protected function _formatAlerts($alerts) {
+        $alert = array();
+        foreach ($alerts as $msg) {
+            $alert[] = $msg . '<br/>';
+        }
+        
+        return implode("\n\r", $alert);
     }
 
     /**
@@ -115,11 +113,10 @@ class Sky_Controller_Action_Helper_FlashMessenger
      *
      * @return int
      */
-    public function count()
-    {
+    public function count() {
         if ($this->hasMessages()) {
-            $count =0;
-            foreach (parent::getMessages() as $messages){
+            $count = 0;
+            foreach (parent::getMessages() as $messages) {
                 $count += count($messages);
             }
             return $count;
@@ -133,8 +130,8 @@ class Sky_Controller_Action_Helper_FlashMessenger
      * @param  string $message
      * @return void
      */
-    public function direct($message,$type)
-    {
-        return $this->addMessage($message,$type);
+    public function direct($message, $type) {
+        return $this->addMessage($message, $type);
     }
+
 }

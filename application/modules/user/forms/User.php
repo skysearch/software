@@ -11,8 +11,7 @@ class Auth_Form_Login extends Twitter_Bootstrap_Form_Vertical {
     public function init() {
 
         $this->setAction('')
-                ->setMethod('post')
-                ->setAttribs(array('class'=>'form','role'=>'form'));
+                ->setMethod('post');
         
         $username = $this->createElement('email', 'username',array(
             'placeholder'   => 'Usuário',

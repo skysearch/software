@@ -8,7 +8,7 @@
 
 class Default_Bootstrap extends Sky_Application_Module_Bootstrap {
 
-    protected function _initPlugins() {
+    /*protected function _initPlugins() {
         $this->bootstrap('FrontController');
         $front = $this->getResource('FrontController');
 
@@ -28,6 +28,6 @@ class Default_Bootstrap extends Sky_Application_Module_Bootstrap {
                 ->inlineScript()->appendFile('vendor/mmenu/layout.js','text/javascript');
         
         return $viewRenderer->view;
-    }
+    }*/
 
 }

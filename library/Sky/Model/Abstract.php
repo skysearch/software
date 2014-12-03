@@ -229,5 +229,9 @@ abstract class Sky_Model_Abstract {
         
         return $this->_data;
     }
+    
+    public function getData(){
+        return $this->_data;
+    }
 
 }

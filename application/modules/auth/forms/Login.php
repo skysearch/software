@@ -6,48 +6,50 @@
  * and open the template in the editor.
  */
 
-class Auth_Form_Login extends Twitter_Bootstrap_Form_Vertical {
+class Auth_Form_Login extends Sky_Form_Simple {
 
     public function init() {
 
-        $this->setAction('')
-                ->setMethod('post')
-                ->setAttribs(array('class'=>'form','role'=>'form'));
-        
-        $username = $this->createElement('email', 'username',array(
-            'placeholder'   => 'Usuário',
-            'prepend'       => '<i class="fa fa-user"></i>',
-            'class'         => 'focused form-control'
-        ));
-        $username->setRequired(true)
+        $this->setMethod('post')
+                ->setAttrib('class', 'form')
+                ->setAttrib('id','fom-user-login')
+                ->setName('formUserLogin');
+
+        $username = $this->createElement('email', 'username', array(
+                    'placeholder' => '',
+                    'label' => 'Usuário',
+                    'required' => true))
                 ->addFilter('StringToLower');
 
-        $password = $this->createElement('password', 'password',array(
-            'class'         =>'form-control',
-            'prepend'       => '<i class="fa fa-lock"></i>',
-            'placeholder'   => 'Senha',
-            ));
-        $password->addValidator('StringLength', false, array(6))
-                ->setRequired(true);
-        
-        $hash = $this->createElement('hash', 'login-csrf')
-                ->setTimeout(1200);
-        
-        $submit = $this->createElement('button', 'login', array(
-            'label'         => 'Login',
-            'type'          => 'submit',
-            'buttonType'    => 'primary',
-            'icon'          => '',
-            'class'         => 'pull-right',        
-            'escape'        => false
+        $password = $this->createElement('password', 'password', array(
+                    'placeholder' => '',
+                    'label' => 'Senha',
+                    'required' => true))
+                ->addValidator('StringLength', false, array(6));
+
+        $hash = $this->createElement('hash', 'logincsrf', array(
+                    'timeout' => 1200,
+                    'required' => true));
+
+        $submit = $this->createElement('button', 'submit', array(
+            'label' => 'Entrar',
+            'type' => 'submit',
+            'ignore' => true,
+            'class' => 'small expand'
         ));
 
-        $this->addElements(array($hash,$username,$password,$submit));
-        
+        $this->addElements(array($hash, $username, $password, $submit));
+
         $this->addDisplayGroup(
-                array('username','password','login'), 
-                'auth-form',
-                array('legend'=>'Autenticação'));
+                array('username', 'password', 'login'), 'auth-form', array('legend' => 'Autenticação'));
+        
+        $this->setDecorators(array(
+            array('ViewScript', array(
+                    'viewScript' => 'forms/login.phtml',
+                    'viewModule' => 'auth'
+                ))
+        ));
+        
     }
 
 }

@@ -1,0 +1,26 @@
+<form action="<?php echo $this->escape($this->element->getAction()); ?>" 
+      method="<?php echo $this->escape($this->element->getMethod()); ?>" 
+      enctype="<?php echo $this->escape($this->element->getEnctype()); ?>"
+      name="<?php echo $this->escape($this->element->getName()); ?>"
+      id="<?php echo $this->escape($this->element->getId()); ?>"
+      class="<?php echo $this->escape($this->element->getAttrib('class')); ?>" >
+    
+    <?php echo $this->element->logincsrf; ?>
+    
+    <fieldset>
+        <legend>Autenticação</legend>
+        <div class="username-field">
+            <label>
+                <?php echo $this->element->username->getLabel(); ?>
+                <?php echo $this->element->username; ?>
+            </label>
+        </div>
+        <div class="password-field">
+            <label>
+                <?php echo $this->element->password->getLabel(); ?>
+                <?php echo $this->element->password; ?>                
+            </label>
+        </div>
+        <?php echo $this->element->submit; ?>
+    </fieldset>
+</form>

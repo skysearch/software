@@ -16,7 +16,7 @@ class Auth_Bootstrap extends Sky_Application_Module_Bootstrap {
     }
 
     protected function _initRewrite() {
-        $front = Zend_Controller_Front::getInstance();
+        /*$front = Zend_Controller_Front::getInstance();
 
         $cache = Sky_Service::get('cache');
         $routes = APPLICATION_PATH . '/modules/auth/configs/routes.ini';
@@ -30,7 +30,7 @@ class Auth_Bootstrap extends Sky_Application_Module_Bootstrap {
                 $cache->save($router, 'auth_routes', array('config', 'router'));
             }
             $front->setRouter($router);
-        }
+        }*/
     }
 
 }

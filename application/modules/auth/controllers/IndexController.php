@@ -23,37 +23,34 @@ class Auth_IndexController extends Zend_Controller_Action {
         $this->view->assign('form', $form);
         if ($this->getRequest()->isPost()) {
             $post = $this->getRequest()->getPost();
-            $user = new Auth_Model_User();
+            $user = new Auth_Model_User($post);
             
             if ($form->isValid($post)) {
-                $user->setOptions($form->getValues());
                 $auth = Zend_Auth::getInstance();
                 $adapter = new Auth_Service_Adapter($user->getUsername(), $user->getPassword());
                 $result = $auth->authenticate($adapter);
                 
-                if(!$result->isValid()){
-                    $this->_flashMessenger->addMessage(implode("\n",$result->getMessages()),'alert-warning');
+                if(!($result->isValid())){
+                    $this->_flashMessenger->addMessage(implode("\n",$result->getMessages()),'warning');
                     $this->_redirector->gotoSimple('login','index','auth');
                 }
                 
-                $this->_flashMessenger->addMessage('Usuário logado com sucesso.','alert-success');
+                $this->_flashMessenger->addMessage('Usuário logado com sucesso.','success');
                 $this->_redirector->gotoSimple('dashboard','index','default');
                 
             } else {
-                $form->setErrors($user->getMessages());
                 $form->populate($post);
             }
         }
         $this->view->assign('title', 'Autenticação');
         $this->view->assign('messages', $this->_flashMessenger->getMessages());
-        
     }
     
     public function logoutAction() {
         $auth = Zend_Auth::getInstance();
         if($auth->hasIdentity()) {
             $auth->clearIdentity();
-            $this->_flashMessenger->addMessage('Usuário deslogado com sucesso.','alert-info');
+            $this->_flashMessenger->addMessage('Usuário deslogado com sucesso.','info');
         }
         return $this->_redirector->gotoSimple('login','index','auth');
     }
